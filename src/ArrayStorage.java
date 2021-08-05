@@ -18,7 +18,7 @@ public class ArrayStorage {
                 return;
             }
         }
-        storage[size()] = r;
+        storage[size] = r;
         size++;
     }
 
@@ -63,4 +63,3 @@ public class ArrayStorage {
     }
 
 }
-
