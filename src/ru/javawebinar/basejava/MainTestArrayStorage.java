@@ -3,6 +3,8 @@ package ru.javawebinar.basejava;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.ArrayStorage;
 
+import java.util.Arrays;
+
 /**
  * Test ru.javawebinar.basejava.storage.ArrayStorage
  */
@@ -33,6 +35,16 @@ public class MainTestArrayStorage {
         printAll();
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
+
+//        Integer[] integers = new Integer[50];
+//        for (int i = 0; i < 50; i++) {
+//            integers[i] = i * 5;
+//        }
+//        for (int i = 0; i < 50; i++) {
+//            System.out.print(integers[i] + " ");
+//        }
+//        System.out.println();
+//        System.out.println(Arrays.binarySearch(integers, 12));
     }
 
     static void printAll() {

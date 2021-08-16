@@ -4,30 +4,22 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
-public class SortedArrayStorage extends AbstractArrayStorage{
-    @Override
-    public void clear() {
+public class SortedArrayStorage extends AbstractArrayStorage {
 
+    @Override
+    public void insertElement(Resume r, int index) {
+        index = -1 * (index + 1);
+        for (int i = size - 1; i >= index; i--) {
+            storage[i + 1] = storage[i];
+        }
+        storage[index] = r;
     }
 
     @Override
-    public void update(Resume r) {
-
-    }
-
-    @Override
-    public void save(Resume r) {
-
-    }
-
-    @Override
-    public void delete(String uuid) {
-
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return new Resume[0];
+    public void deleteElement(int index) {
+        for (int i = index; i < size - 1; i++) {
+            storage[i] = storage[i + 1];
+        }
     }
 
     @Override
