@@ -6,6 +6,8 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -23,10 +25,10 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_4;
 
     static {
-        RESUME_1 = new Resume(UUID_1);
-        RESUME_2 = new Resume(UUID_2);
-        RESUME_3 = new Resume(UUID_3);
-        RESUME_4 = new Resume(UUID_4);
+        RESUME_1 = new Resume(UUID_1, "Name1");
+        RESUME_2 = new Resume(UUID_2, "Name2");
+        RESUME_3 = new Resume(UUID_3, "Name3");
+        RESUME_4 = new Resume(UUID_4, "Name4");
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -54,7 +56,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume newResume = new Resume(UUID_1);
+        Resume newResume = new Resume(UUID_1, "NewName");
         storage.update(newResume);
         assertTrue(newResume == storage.get(UUID_1));
     }
@@ -64,14 +66,23 @@ public abstract class AbstractStorageTest {
         storage.get("dummy");
     }
 
+    //    @Test
+//    public void getAll() throws Exception {
+//        Resume[] array = storage.getAll();
+//        System.out.println(array.length);
+//        assertEquals(3, array.length);
+//        assertEquals(RESUME_1, array[0]);
+//        assertEquals(RESUME_2, array[1]);
+//        assertEquals(RESUME_3, array[2]);
+//    }
     @Test
-    public void getAll() throws Exception {
-        Resume[] array = storage.getAll();
-        System.out.println(array.length);
-        assertEquals(3, array.length);
-        assertEquals(RESUME_1, array[0]);
-        assertEquals(RESUME_2, array[1]);
-        assertEquals(RESUME_3, array[2]);
+    public void getAllSorted() throws Exception {
+        List<Resume> array = storage.getAllSorted();
+        System.out.println(array.size());
+        assertEquals(3, array.size());
+        assertEquals(RESUME_1, array.get(0));
+        assertEquals(RESUME_2, array.get(1));
+        assertEquals(RESUME_3, array.get(2));
     }
 
     @Test

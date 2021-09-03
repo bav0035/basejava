@@ -1,21 +1,18 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
-import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ListStorage extends AbstractStorage {
-    private List<Resume> storageList = new ArrayList<>();
+    protected static final int STORAGE_LIMIT = 10000;
+    private List<Resume> storage = new ArrayList<>();
 
     @Override
     protected Object getSearchKey(String uuid) {
-        for (int i = 0; i < storageList.size(); i++) {
-            if (storageList.get(i).getUuid().equals(uuid)) {
+        for (int i = 0; i < storage.size(); i++) {
+            if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
             }
         }
@@ -24,22 +21,22 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume r, Object searchKey) {
-        storageList.set((int) searchKey, r);
+        storage.set((int) searchKey, r);
     }
 
     @Override
     protected void doSave(Resume r, Object searchKey) {
-        storageList.add(r);
+        storage.add(r);
     }
 
     @Override
     protected void doDelete(Object searchKey) {
-        storageList.remove((int) searchKey);
+        storage.remove((int) searchKey);
     }
 
     @Override
     protected Resume doGet(Object searchKey) {
-        return storageList.get((int) searchKey);
+        return storage.get((int) searchKey);
     }
 
     @Override
@@ -49,17 +46,17 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void clear() {
-        storageList.clear();
+        storage.clear();
     }
 
     @Override
-    public Resume[] getAll() {
-        Resume[] r = new Resume[storageList.size()];
-        return storageList.toArray(r);
+    public List<Resume> getAllSorted() {
+        storage.sort(RESUME_COMPARATOR);
+        return storage;
     }
 
     @Override
     public int size() {
-        return storageList.size();
+        return storage.size();
     }
 }

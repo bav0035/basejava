@@ -4,9 +4,13 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Comparator;
+import java.util.logging.Logger;
+
 public abstract class AbstractStorage implements Storage {
 
-    protected static final int STORAGE_LIMIT = 10000;
+    protected static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
+    protected static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
 
     protected abstract Object getSearchKey(String uuid);
 
@@ -26,17 +30,20 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void save(Resume r) {
+        LOG.info("save " + r.getUuid());
         Object searchKey = getNotExistedSearchKey(r.getUuid());
         doSave(r, searchKey);
     }
 
     public void delete(String uuid) {
+        LOG.info("delete " + uuid);
         Object searchKey = getExistedSearchKey(uuid);
         doDelete(searchKey);
     }
 
 
     public Resume get(String uuid) {
+        LOG.info("get " + uuid);
         Object searchKey = getExistedSearchKey(uuid);
         return doGet(searchKey);
     }
@@ -44,6 +51,7 @@ public abstract class AbstractStorage implements Storage {
     private Object getExistedSearchKey(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
+            LOG.warning("Resume not exist " + uuid);
             throw new NotExistStorageException("Not exist " + uuid);
         }
         return searchKey;
@@ -52,6 +60,7 @@ public abstract class AbstractStorage implements Storage {
     private Object getNotExistedSearchKey(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
+            LOG.warning("Resume already exist " + uuid);
             throw new ExistStorageException("Already exist " + uuid);
         }
         return searchKey;
