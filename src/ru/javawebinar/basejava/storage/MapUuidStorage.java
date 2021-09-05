@@ -2,43 +2,40 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
-public class MapUuidStorage extends AbstractStorage{
+public class MapUuidStorage extends AbstractStorage<String> {
     protected static final int STORAGE_LIMIT = 10000;
-    private Map<String, Resume> map = new TreeMap<>();
+    private final Map<String, Resume> map = new HashMap<>();
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected void doUpdate(Resume r, Object key) {
-        map.put((String) key, r);
+    protected void doUpdate(Resume r, String key) {
+        map.put(key, r);
     }
 
     @Override
-    protected void doSave(Resume r, Object key) {
-        map.put((String) key, r);
+    protected void doSave(Resume r, String key) {
+        map.put(key, r);
     }
 
     @Override
-    protected void doDelete(Object key) {
-        map.remove((String) key);
+    protected void doDelete(String key) {
+        map.remove(key);
     }
 
     @Override
-    protected Resume doGet(Object key) {
-        return map.get((String) key);
+    protected Resume doGet(String key) {
+        return map.get(key);
     }
 
     @Override
-    protected boolean isExist(Object key) {
-        return map.containsKey((String) key);
+    protected boolean isExist(String key) {
+        return map.containsKey(key);
     }
 
     @Override
@@ -47,64 +44,12 @@ public class MapUuidStorage extends AbstractStorage{
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> allList = new ArrayList<>(map.values());
-        allList.sort(RESUME_COMPARATOR);
-        return allList;
+    protected List<Resume> doCopyAll() {
+        return new ArrayList<>(map.values());
     }
 
     @Override
     public int size() {
         return map.size();
     }
-    //    @Override
-//    public void clear() {
-//        map.clear();
-//    }
-//
-//    @Override
-//    public void update(Resume r) {
-//        if (!map.containsKey(r.getUuid())) {
-//            throw new NotExistStorageException("Not Exist " + r.getUuid());
-//        } else {
-//            map.put(r.getUuid(), r);
-//        }
-//    }
-//
-//    @Override
-//    public void save(Resume r) {
-//        if (map.containsKey(r.getUuid())) {
-//            throw new ExistStorageException("Already exist " + r.getUuid());
-//        } else {
-//            throw new StorageException("Storage overflow", r.getUuid());
-//        }
-//    }
-//
-//    @Override
-//    public Resume get(String uuid) {
-//        if (map.containsKey(uuid)) {
-//            return map.get(uuid);
-//        }
-//        throw new NotExistStorageException("Not Exist " + uuid);
-//    }
-//
-//    @Override
-//    public void delete(String uuid) {
-//        if (map.containsKey(uuid)) {
-//            map.remove(uuid);
-//        } else {
-//            throw new NotExistStorageException("Not Exist " + uuid);
-//        }
-//    }
-//
-//    @Override
-//    public Resume[] getAll() {
-//        Resume[] r = new Resume[map.size()];
-//        return map.values().toArray(r);
-//    }
-//
-//    @Override
-//    public int size() {
-//        return map.size();
-//    }
 }
