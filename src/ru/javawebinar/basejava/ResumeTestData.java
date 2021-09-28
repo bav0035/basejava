@@ -1,11 +1,10 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.util.DateUtil;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +14,27 @@ public class ResumeTestData {
     static List<String> list = new ArrayList<>(Arrays.asList("+7(921) 855-0482", "gkislin@yandex.ru", "grigory.kislin", "www.github.com", "www.stackoverflow.com", "www.ya.ru"));
 
     public static void main(String[] args) throws ParseException {
+        fillResume();
+        System.out.println(r.getFullName());
+        for (ContactType ct : ContactType.values()) {
+            System.out.print(ct.getTitle() + ": ");
+            System.out.println(r.getContact(ct));
+        }
+
+        System.out.println();
+        for (SectionType st : SectionType.values()) {
+            System.out.println(st.getTitle());
+            r.getSection(st).view();
+        }
+    }
+
+    public static Resume getResume(String uuid, String name) {
+        r = new Resume(uuid, name);
+        fillResume();
+        return r;
+    }
+
+    private static void fillResume() {
         for (ContactType ct : ContactType.values()) {
             r.addContact(ct, list.get(ct.ordinal()));
         }
@@ -45,37 +65,19 @@ public class ResumeTestData {
                 "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования",
                 "Родной русский, английский \"upper intermediate\""
         ))));
-        
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        
-        List<Organization> orgList = new ArrayList<>();
-        orgList.add(new Organization("Java Online Projects", null, LocalDate.parse("01/10/2013", formatter), null, "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок"));
-        orgList.add(new Organization("Wrike", "www.wrike.com", LocalDate.parse("01/10/2014", formatter), LocalDate.parse("01/01/2016", formatter), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
-        orgList.add(new Organization("RIT Center", "www.ritcenter.ru", LocalDate.parse("01/04/2012", formatter), LocalDate.parse("01/10/2014", formatter), "Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"));
-        OrganizationSection exp = new OrganizationSection(orgList);
+
+        OrganizationSection exp = new OrganizationSection();
+        exp.add(new Organization("Java Online Projects", null, DateUtil.of(2013, Month.OCTOBER), null, "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок"));
+        exp.add(new Organization("Wrike", "www.wrike.com", DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2016, Month.JANUARY), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
+        exp.add(new Organization("RIT Center", "www.ritcenter.ru", DateUtil.of(2012, Month.APRIL), DateUtil.of(2014, Month.OCTOBER), "Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"));
         r.addSection(SectionType.EXPERIENCE, exp);
 
-        List<Organization> orgListStudy = new ArrayList<>();
-        orgListStudy.add(new Organization("Coursera", null, LocalDate.parse("01/03/2013", formatter), LocalDate.parse("01/05/2013", formatter), "null", "Functional Programming Principles in Scala\" by Martin Odersky"));
-        orgListStudy.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", null, LocalDate.parse("01/09/1993", formatter), LocalDate.parse("01/07/1996", formatter), "null", "Аспирантура (программист С, С++)"));
-        orgListStudy.add(new Organization("Заочная физико-техническая школа при МФТИ", null, LocalDate.parse("01/09/1984", formatter), LocalDate.parse("01/06/1987", formatter), "null", "Закончил с отличием"));
-        OrganizationSection edu = new OrganizationSection(orgListStudy);
+        OrganizationSection edu = new OrganizationSection();
+        edu.add(new Organization("Coursera", null, DateUtil.of(2013, Month.MARCH), DateUtil.of(2013, Month.MAY), "Functional Programming Principles in Scala\" by Martin Odersky", null));
+        edu.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", null, DateUtil.of(1993, Month.SEPTEMBER), DateUtil.of(1996, Month.JULY), "Аспирантура (программист С, С++)", null));
+        edu.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", null, DateUtil.of(1987, Month.SEPTEMBER), DateUtil.of(1993, Month.JULY), "Инженер (программист Fortran, C)", null));
+        edu.add(new Organization("Заочная физико-техническая школа при МФТИ", null, DateUtil.of(1984, Month.SEPTEMBER), DateUtil.of(1987, Month.JUNE), "Закончил с отличием", null));
         r.addSection(SectionType.EDUCATION, edu);
-
-
-
-        System.out.println(r.getFullName());
-        for (ContactType ct : ContactType.values()) {
-            System.out.print(ct.getTitle() + ": ");
-            System.out.println(r.getContact(ct));
-        }
-
-        System.out.println();
-        for (SectionType st : SectionType.values()) {
-            System.out.println(st.getTitle());
-            r.getSection(st).view();
-        }
     }
-
 
 }

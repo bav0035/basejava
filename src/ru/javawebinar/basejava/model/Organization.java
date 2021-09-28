@@ -21,13 +21,43 @@ public class Organization {
         this.description = description;
     }
 
+    public Link getCompany() {
+        return company;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String printCompany() {
+        return company.toString();
+    }
+
+    public String printContent() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(startDate + " - " + endDate == null ? "now" : endDate); sb.append("\n");
+        sb.append(title); sb.append("\n");
+        sb.append(description);
+        return new String(sb);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(company); sb.append("\n");
-        sb.append(startDate + " - " + endDate == null ? "now" : endDate); sb.append("\n");
-        sb.append(title); sb.append("\n");
-        sb.append(description); sb.append("\n");
+        sb.append(printCompany()); sb.append("\n");
+        sb.append(printContent()); sb.append("\n");
         return new String(sb);
     }
 

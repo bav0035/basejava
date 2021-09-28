@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 
 public class MainFile {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String filePath = ".gitignore";
         File file = new File(filePath);
         try {
@@ -31,5 +31,27 @@ public class MainFile {
             throw new RuntimeException(e);
         }
 
+        System.out.println("=====================================");
+        File startDir = new File(".");
+        fileNamesViewerRecurse(startDir);
+
+    }
+
+    public static void fileNamesViewerRecurse(File dir) throws IOException {
+        System.out.println("Dir " + dir.getCanonicalPath());
+
+        List<File> files = new ArrayList<>(Arrays.asList(Objects.requireNonNull(dir.listFiles())));
+        Iterator<File> fIterator = files.iterator();
+        while (fIterator.hasNext()) {
+            File f = fIterator.next();
+            if (f.isFile()) {
+                System.out.println(f.getName());
+                fIterator.remove();
+            }
+        }
+        System.out.println();
+        for(File f : files) {
+            fileNamesViewerRecurse(f);
+        }
     }
 }
