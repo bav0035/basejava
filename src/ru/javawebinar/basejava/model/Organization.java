@@ -1,63 +1,44 @@
 package ru.javawebinar.basejava.model;
 
+import ru.javawebinar.basejava.util.DateUtil;
+
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Objects;
+import java.time.Month;
+import java.util.*;
 
 public class Organization {
     private final Link company;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final String title;
-    private final String description;
+    List<Position> positions = new ArrayList<>();
 
-    public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
-        Objects.requireNonNull(startDate, "startDate must be not null!");
-        Objects.requireNonNull(title, "title must be not null!");
+
+    public Organization(String name, String url, List<Position> positions) {
         this.company = new Link(name, url);
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.title = title;
-        this.description = description;
+        this.positions = positions;
+    }
+
+    public Organization(String name, String url, Position... positions) {
+        this(name, url, Arrays.asList(positions));
+    }
+
+    public Organization(String name, String url) {
+        this.company = new Link(name, url);
+    }
+
+    public void addPosition(Position p) {
+        positions.add(p);
     }
 
     public Link getCompany() {
         return company;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String printCompany() {
-        return company.toString();
-    }
-
-    public String printContent() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(startDate + " - " + endDate == null ? "now" : endDate); sb.append("\n");
-        sb.append(title); sb.append("\n");
-        sb.append(description);
-        return new String(sb);
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(printCompany()); sb.append("\n");
-        sb.append(printContent()); sb.append("\n");
+        sb.append(company); sb.append("\n");
+        for (Position p : positions) {
+            sb.append(p); sb.append("\n");
+        }
         return new String(sb);
     }
 
@@ -69,19 +50,81 @@ public class Organization {
         Organization that = (Organization) o;
 
         if (!company.equals(that.company)) return false;
-        if (!startDate.equals(that.startDate)) return false;
-        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
-        if (!title.equals(that.title)) return false;
-        return description != null ? description.equals(that.description) : that.description == null;
+        return positions.equals(that.positions);
     }
 
     @Override
     public int hashCode() {
         int result = company.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + title.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + positions.hashCode();
         return result;
+    }
+
+    public static class Position {
+        private final LocalDate startDate;
+        private final LocalDate endDate;
+        private final String title;
+        private final String description;
+
+        public Position(int startYear, Month startMonth, String title, String description) {
+            this(DateUtil.of(startYear, startMonth), DateUtil.NOW, title, description);
+        }
+
+        public Position(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
+            this(DateUtil.of(startYear, startMonth), DateUtil.of(endYear, endMonth), title, description);
+        }
+
+        public Position(LocalDate startDate, LocalDate endDate, String title, String description) {
+            Objects.requireNonNull(startDate, "startDate must be not null!");
+            Objects.requireNonNull(startDate, "endDate must be not null!");
+            Objects.requireNonNull(title, "title must be not null!");
+            this.startDate = startDate;
+            this.endDate = endDate;
+            this.title = title;
+            this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return startDate + " - " + endDate + "\n" + title + "\n" + description;
+        }
+
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Position position = (Position) o;
+
+            if (!startDate.equals(position.startDate)) return false;
+            if (!endDate.equals(position.endDate)) return false;
+            if (!title.equals(position.title)) return false;
+            return description != null ? description.equals(position.description) : position.description == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = startDate.hashCode();
+            result = 31 * result + endDate.hashCode();
+            result = 31 * result + title.hashCode();
+            result = 31 * result + (description != null ? description.hashCode() : 0);
+            return result;
+        }
     }
 }

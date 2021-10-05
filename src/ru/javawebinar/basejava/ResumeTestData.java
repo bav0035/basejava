@@ -67,17 +67,22 @@ public class ResumeTestData {
         ))));
 
         OrganizationSection exp = new OrganizationSection();
-        exp.add(new Organization("Java Online Projects", null, DateUtil.of(2013, Month.OCTOBER), null, "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок"));
-        exp.add(new Organization("Wrike", "www.wrike.com", DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2016, Month.JANUARY), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
-        exp.add(new Organization("RIT Center", "www.ritcenter.ru", DateUtil.of(2012, Month.APRIL), DateUtil.of(2014, Month.OCTOBER), "Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python"));
+        exp.add(new Organization("Java Online Projects", null,
+                new Organization.Position(2013, Month.OCTOBER, "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок")));
+        exp.add(new Organization("Wrike", "www.wrike.com",
+                new Organization.Position(2014, Month.OCTOBER, 2016, Month.JANUARY, "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")));
+        exp.add(new Organization("RIT Center", "www.ritcenter.ru",
+                new Organization.Position(2012, Month.APRIL, 2014, Month.OCTOBER, "Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell remote scripting via ssh tunnels, PL/Python")));
         r.addSection(SectionType.EXPERIENCE, exp);
 
         OrganizationSection edu = new OrganizationSection();
-        edu.add(new Organization("Coursera", null, DateUtil.of(2013, Month.MARCH), DateUtil.of(2013, Month.MAY), "Functional Programming Principles in Scala\" by Martin Odersky", null));
-        edu.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", null, DateUtil.of(1993, Month.SEPTEMBER), DateUtil.of(1996, Month.JULY), "Аспирантура (программист С, С++)", null));
-        edu.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", null, DateUtil.of(1987, Month.SEPTEMBER), DateUtil.of(1993, Month.JULY), "Инженер (программист Fortran, C)", null));
-        edu.add(new Organization("Заочная физико-техническая школа при МФТИ", null, DateUtil.of(1984, Month.SEPTEMBER), DateUtil.of(1987, Month.JUNE), "Закончил с отличием", null));
+        edu.add(new Organization("Coursera", null,
+                new Organization.Position(2013, Month.MARCH, 2013, Month.MAY, "Functional Programming Principles in Scala\" by Martin Odersky", null)));
+        edu.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", null,
+                new Organization.Position(1993, Month.SEPTEMBER, 1996, Month.JULY, "Аспирантура (программист С, С++)", null),
+                new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Инженер (программист Fortran, C)", null)));
+        edu.add(new Organization("Заочная физико-техническая школа при МФТИ", null,
+                new Organization.Position(1984, Month.SEPTEMBER, 1987, Month.JUNE, "Закончил с отличием", null)));
         r.addSection(SectionType.EDUCATION, edu);
     }
-
 }
