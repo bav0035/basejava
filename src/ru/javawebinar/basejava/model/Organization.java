@@ -2,11 +2,15 @@ package ru.javawebinar.basejava.model;
 
 import ru.javawebinar.basejava.util.DateUtil;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 
-public class Organization {
+public class Organization implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final Link company;
     List<Position> positions = new ArrayList<>();
 
@@ -35,9 +39,11 @@ public class Organization {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(company); sb.append("\n");
+        sb.append(company);
+        sb.append("\n");
         for (Position p : positions) {
-            sb.append(p); sb.append("\n");
+            sb.append(p);
+            sb.append("\n");
         }
         return new String(sb);
     }
@@ -60,7 +66,9 @@ public class Organization {
         return result;
     }
 
-    public static class Position {
+    public static class Position implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 1L;
         private final LocalDate startDate;
         private final LocalDate endDate;
         private final String title;
