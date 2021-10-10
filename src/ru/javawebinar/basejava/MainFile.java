@@ -33,11 +33,12 @@ public class MainFile {
 
         System.out.println("=====================================");
         File startDir = new File(".");
-        fileNamesViewerRecurse(startDir);
+        fileNamesViewerRecurse(startDir, "");
 
     }
 
-    public static void fileNamesViewerRecurse(File dir) throws IOException {
+    public static void fileNamesViewerRecurse(File dir, String indent) throws IOException {
+        System.out.print(indent);
         System.out.println("Dir " + dir.getCanonicalPath());
 
         List<File> files = new ArrayList<>(Arrays.asList(Objects.requireNonNull(dir.listFiles())));
@@ -45,13 +46,14 @@ public class MainFile {
         while (fIterator.hasNext()) {
             File f = fIterator.next();
             if (f.isFile()) {
+                System.out.print(indent + "   ");
                 System.out.println(f.getName());
                 fIterator.remove();
             }
         }
         System.out.println();
         for(File f : files) {
-            fileNamesViewerRecurse(f);
+            fileNamesViewerRecurse(f, indent + "   ");
         }
     }
 }
