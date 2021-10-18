@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +12,9 @@ public class ListSection extends Section {
     @Serial
     private static final long serialVersionUID = 1L;
     private List<String> items = new ArrayList<>();
+
+    public ListSection() {
+    }
 
     public ListSection(String... items) {
         this(Arrays.asList(items));

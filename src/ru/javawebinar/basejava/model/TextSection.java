@@ -1,16 +1,21 @@
 package ru.javawebinar.basejava.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serial;
 import java.util.Objects;
 
 public class TextSection extends Section {
     @Serial
     private static final long serialVersionUID = 1L;
-    private final String text;
+    private String text;
 
     public TextSection(String text) {
         Objects.requireNonNull(text, "text must be not null!");
         this.text = text;
+    }
+
+    public TextSection() {
     }
 
     public String getText() {
@@ -26,14 +31,12 @@ public class TextSection extends Section {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         TextSection that = (TextSection) o;
-
         return text.equals(that.text);
     }
 
     @Override
     public int hashCode() {
-        return text.hashCode();
+        return Objects.hash(text);
     }
 }
