@@ -4,10 +4,12 @@ import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.util.DateUtil;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class ResumeTestData {
     static Resume r = new Resume("uuid1", "name1");
@@ -15,17 +17,26 @@ public class ResumeTestData {
 
     public static void main(String[] args) throws ParseException {
         fillResume();
-        System.out.println(r.getFullName());
-        for (ContactType ct : ContactType.values()) {
-            System.out.print(ct.getTitle() + ": ");
-            System.out.println(r.getContact(ct));
-        }
 
-        System.out.println();
-        for (SectionType st : SectionType.values()) {
-            System.out.println(st.getTitle());
-            r.getSection(st).view();
-        }
+        r.view();
+//        System.out.println(r.getUuid());
+//        System.out.println(r.getFullName());
+//        for (ContactType ct : ContactType.values()) {
+//            System.out.print(ct.getTitle() + ": ");
+//            System.out.println(r.getContact(ct));
+//        }
+//
+//        System.out.println();
+//        for (SectionType st : SectionType.values()) {
+//            System.out.println(st.getTitle());
+//            r.getSection(st).view();
+//        }
+
+//        Map<SectionType, Section> map = r.getSections();
+//        System.out.println(map.size());
+//        System.out.println();
+//        System.out.println(LocalDate.parse("1987-06-01"));
+
     }
 
     public static Resume getResume(String uuid, String name) {

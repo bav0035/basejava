@@ -117,6 +117,9 @@ public abstract class AbstractStorageTest {
 
     private void assertGet(Resume r) {
         assertTrue(r.equals(storage.get(r.getUuid())));
+//        r.view();
+//        System.out.println("======================");
+//        storage.get(r.getUuid()).view();
 //        assertEquals(r, storage.get(r.getUuid()));
     }
 

@@ -56,6 +56,10 @@ public class Resume implements Comparable<Resume>, Serializable {
         return contacts;
     }
 
+    public Map<SectionType, Section> getSections() {
+        return sections;
+    }
+
     public Section getSection(SectionType type) {
         return sections.get(type);
     }
@@ -66,6 +70,21 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     public void addSection(SectionType st, Section section) {
         sections.put(st, section);
+    }
+
+    public void view() {
+        System.out.println(uuid);
+        System.out.println(fullName);
+        for (ContactType ct : ContactType.values()) {
+            System.out.print(ct.getTitle() + ": ");
+            System.out.println(getContact(ct));
+        }
+
+        System.out.println();
+        for (SectionType st : SectionType.values()) {
+            System.out.println(st.getTitle());
+            getSection(st).view();
+        }
     }
 
     @Override

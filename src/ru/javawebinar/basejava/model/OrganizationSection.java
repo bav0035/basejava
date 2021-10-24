@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,10 @@ public class OrganizationSection extends Section {
         for (Organization org : organizations) {
             System.out.println(org);
         }
-//        System.out.println(organizations);
+    }
+
+    public List<Organization> getOrganizations() {
+        return organizations;
     }
 
     @Override
