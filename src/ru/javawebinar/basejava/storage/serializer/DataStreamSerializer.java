@@ -143,6 +143,4 @@ public class DataStreamSerializer implements StreamSerializer {
         }
         return organizationSection;
     }
-
-
 }
