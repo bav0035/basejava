@@ -18,14 +18,14 @@ public class ResumeTestData {
     public static void main(String[] args) throws ParseException {
         fillResume();
 
-        r.view();
-//        System.out.println(r.getUuid());
-//        System.out.println(r.getFullName());
-//        for (ContactType ct : ContactType.values()) {
-//            System.out.print(ct.getTitle() + ": ");
-//            System.out.println(r.getContact(ct));
-//        }
-//
+/*        r.view();
+        System.out.println(r.getUuid());
+        System.out.println(r.getFullName());
+        for (ContactType ct : ContactType.values()) {
+            System.out.print(ct.getTitle() + ": ");
+            System.out.println(r.getContact(ct));
+        }*/
+
 //        System.out.println();
 //        for (SectionType st : SectionType.values()) {
 //            System.out.println(st.getTitle());
@@ -41,7 +41,7 @@ public class ResumeTestData {
 
     public static Resume getResume(String uuid, String name) {
         r = new Resume(uuid, name);
-//        fillResume();
+        fillResume();
         return r;
     }
 
@@ -49,7 +49,7 @@ public class ResumeTestData {
         for (ContactType ct : ContactType.values()) {
             r.addContact(ct, list.get(ct.ordinal()));
         }
-        r.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+        /*r.addSection(SectionType.OBJECTIVE, new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
         r.addSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         r.addSection(SectionType.ACHIEVEMENT, new ListSection(new ArrayList<>(Arrays.asList(
                 "С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
@@ -94,6 +94,6 @@ public class ResumeTestData {
                 new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Инженер (программист Fortran, C)", null)));
         edu.add(new Organization("Заочная физико-техническая школа при МФТИ", null,
                 new Organization.Position(1984, Month.SEPTEMBER, 1987, Month.JUNE, "Закончил с отличием", null)));
-        r.addSection(SectionType.EDUCATION, edu);
+        r.addSection(SectionType.EDUCATION, edu);*/
     }
 }

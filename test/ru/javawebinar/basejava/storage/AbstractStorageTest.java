@@ -19,10 +19,15 @@ public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
     protected Storage storage;
 
-    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_1 = "uuid1";
+    private static final String UUID_2 = "uuid2";
+    private static final String UUID_3 = "uuid3";
+    private static final String UUID_4 = "uuid4";
+
+/*    private static final String UUID_1 = UUID.randomUUID().toString();
     private static final String UUID_2 = UUID.randomUUID().toString();
     private static final String UUID_3 = UUID.randomUUID().toString();
-    private static final String UUID_4 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();*/
 
     private static final Resume RESUME_1;
     private static final Resume RESUME_2;
@@ -68,13 +73,13 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() throws Exception {
-        storage.get("dummy");
+        Resume r = new Resume("NonExistUUID", "NNNNN");
+        storage.update(r);
     }
 
     @Test
     public void getAllSorted() throws Exception {
-        List<Resume> list = storage.getAllSorted();
-        System.out.println(list.size());
+        List<Resume> list = storage.getAllSorted();;
         assertEquals(3, list.size());
         assertEquals(RESUME_1, list.get(0));
         assertEquals(RESUME_2, list.get(1));
