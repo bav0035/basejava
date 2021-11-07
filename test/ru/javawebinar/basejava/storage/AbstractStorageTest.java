@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.ResumeTestData;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
+import ru.javawebinar.basejava.model.ContactType;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.File;
@@ -67,6 +68,9 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() throws Exception {
         Resume newResume = ResumeTestData.getResume(UUID_1, "NewName");
+        newResume.addContact(ContactType.EMAIL, "zxcvbn@gmail.com");
+        newResume.addContact(ContactType.PHONENUMBER, "+755599687452");
+        newResume.addContact(ContactType.SKYPE, "new-s-k-y-p-e");
         storage.update(newResume);
         assertEquals(newResume, storage.get(UUID_1));
     }
@@ -124,10 +128,7 @@ public abstract class AbstractStorageTest {
 
     private void assertGet(Resume r) {
         assertTrue(r.equals(storage.get(r.getUuid())));
-//        r.view();
-//        System.out.println("======================");
-//        storage.get(r.getUuid()).view();
-//        assertEquals(r, storage.get(r.getUuid()));
+
     }
 
     private void assertSize(int size) {
