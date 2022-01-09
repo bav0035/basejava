@@ -11,7 +11,6 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -83,7 +82,8 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() throws Exception {
-        List<Resume> list = storage.getAllSorted();;
+        List<Resume> list = storage.getAllSorted();
+
         assertEquals(3, list.size());
         assertEquals(RESUME_1, list.get(0));
         assertEquals(RESUME_2, list.get(1));

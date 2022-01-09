@@ -18,7 +18,12 @@ public class SqlStorage implements Storage {
     public final SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        connectionFactory = new ConnectionFactory() {
+            @Override
+            public Connection getConnection() throws SQLException {
+                return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            }
+        };
         sqlHelper = new SqlHelper(connectionFactory);
     }
 
@@ -97,13 +102,16 @@ public class SqlStorage implements Storage {
                 "SELECT * " +
                 "FROM resume r " +
                 "LEFT JOIN contact c ON r.uuid = c.resume_uuid " +
-                "ORDER BY full_name, uuid ASC", ps -> {
+                "ORDER BY full_name, uuid, type ASC", ps -> {
             ResultSet rs = ps.executeQuery();
 
             List<Resume> list = new ArrayList<>();
             String currentUuid = null;
             Resume r = null;
             while (rs.next()) {
+                System.out.println(rs.getString("uuid") + "   " +
+                        rs.getString("full_name") + "   " +
+                        rs.getString("type"));
                 if (!Objects.equals(rs.getString("uuid"), currentUuid)) {
                     if (Objects.nonNull(r)) {
                         list.add(r);
