@@ -25,6 +25,12 @@ public class OrganizationSection extends Section {
         }
     }
 
+    @Override
+    public String getItemsAsText() {
+        System.out.println("You must implements method takeItemsAsText()!");
+        return null;
+    }
+
     public List<Organization> getOrganizations() {
         return organizations;
     }

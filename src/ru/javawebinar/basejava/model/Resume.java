@@ -75,16 +75,25 @@ public class Resume implements Comparable<Resume>, Serializable {
     public void view() {
         System.out.println(uuid);
         System.out.println(fullName);
-        for (ContactType ct : ContactType.values()) {
-            System.out.print(ct.getTitle() + ": ");
-            System.out.println(getContact(ct));
+
+        if (contacts.size() > 0) {
+            for (ContactType ct : ContactType.values()) {
+                System.out.print(ct.getTitle() + ": ");
+                System.out.println(getContact(ct));
+            }
         }
 
         System.out.println();
-        for (SectionType st : SectionType.values()) {
-            System.out.println(st.getTitle());
-            getSection(st).view();
+        if (sections.size() > 0) {
+            for (SectionType st : SectionType.values()) {
+                if (sections.containsKey(st)) {
+                    System.out.println(st.getTitle());
+                    getSection(st).view();
+                }
+            }
         }
+        System.out.println("=======================");
+        System.out.println();
     }
 
     @Override

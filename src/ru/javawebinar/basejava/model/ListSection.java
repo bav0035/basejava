@@ -35,6 +35,17 @@ public class ListSection extends Section {
     }
 
     @Override
+    public String getItemsAsText() {
+        StringBuilder text = new StringBuilder();
+        for (String str : items) {
+            text.append(str);
+            text.append('\n');
+        }
+        text.deleteCharAt(text.length() - 1);
+        return text.toString();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
