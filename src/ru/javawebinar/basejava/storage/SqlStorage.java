@@ -5,6 +5,7 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.ConnectionFactory;
 import ru.javawebinar.basejava.sql.SqlHelper;
+import ru.javawebinar.basejava.util.JsonParser;
 
 import java.sql.*;
 import java.util.*;
@@ -148,12 +149,7 @@ public class SqlStorage implements Storage {
     }
 
     private void addSection(Resume r, SectionType sectionType, String sectionValue) {
-        if (sectionType.toString().equals("PERSONAL") || sectionType.toString().equals("OBJECTIVE")) {
-            r.addSection(sectionType, new TextSection(sectionValue));
-        }
-        if (sectionType.toString().equals("ACHIEVEMENT") || sectionType.toString().equals("QUALIFICATIONS")) {
-            r.addSection(sectionType, new ListSection(Arrays.asList(sectionValue.split("\n"))));
-        }
+        r.addSection(sectionType, JsonParser.read(sectionValue, Section.class));
     }
 
     public List<Resume> getAllSortedWithOneRequest() {
@@ -222,14 +218,15 @@ public class SqlStorage implements Storage {
     }
 
     private void insertSection(Connection conn, Resume r) throws SQLException {
-        try (PreparedStatement psc = conn.prepareStatement("INSERT INTO section (resume_uuid, section_type, section_value) VALUES (?, ?, ?)")) {
-            for (Map.Entry<SectionType, Section> section : r.getSections().entrySet()) {
-                psc.setString(1, r.getUuid());
-                psc.setString(2, section.getKey().name());
-                psc.setString(3, section.getValue().getItemsAsText());
-                psc.addBatch();
+        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid, section_type, section_value) VALUES (?, ?, ?)")) {
+            for (Map.Entry<SectionType, Section> entry : r.getSections().entrySet()) {
+                ps.setString(1, r.getUuid());
+                ps.setString(2, entry.getKey().name());
+                Section section = entry.getValue();
+                ps.setString(3, JsonParser.write(section, Section.class));
+                ps.addBatch();
             }
-            psc.executeBatch();
+            ps.executeBatch();
         }
     }
 
