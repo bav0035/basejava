@@ -18,15 +18,15 @@ public class Config {
     }
 
     private Config() {
-        File PROPS = new File("config\\resumes.properties");
+        File PROPS = new File(getHomeDir(), "config\\resumes.properties");
         try (InputStream fis = new FileInputStream(PROPS)) {
 
             Properties prop = new Properties();
             prop.load(fis);
             storageDir = new File(prop.getProperty("storage.dir"));
             String url = prop.getProperty("db.url");
-            String  user = prop.getProperty("db.user");
-            String password = prop. getProperty("db.password");
+            String user = prop.getProperty("db.user");
+            String password = prop.getProperty("db.password");
             sqlStorage = new SqlStorage(url, user, password);
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file" + PROPS.getAbsolutePath());
@@ -39,5 +39,14 @@ public class Config {
 
     public SqlStorage getSqlStorage() {
         return sqlStorage;
+    }
+
+    private static File getHomeDir() {
+        String homeDir = System.getProperty("homeDir");
+        File file = new File(homeDir == null ? "." : homeDir);
+        if (!file.isDirectory()) {
+            throw new IllegalStateException(file + " is not directory.");
+        }
+        return file;
     }
 }
