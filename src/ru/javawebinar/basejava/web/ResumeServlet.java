@@ -8,6 +8,7 @@ import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.SqlHelper;
 import ru.javawebinar.basejava.storage.SqlStorage;
 import ru.javawebinar.basejava.storage.Storage;
+import ru.javawebinar.basejava.util.DateUtil;
 import ru.javawebinar.basejava.util.HtmlUtil;
 
 import javax.servlet.*;
@@ -21,11 +22,6 @@ import java.util.UUID;
 public class ResumeServlet extends HttpServlet {
 
     private void refillDB() {
-/*        String UUID_1 = "uuid1";
-        String UUID_2 = "uuid2";
-        String UUID_3 = "uuid3";
-        String UUID_4 = "uuid4";*/
-
         final String UUID_1 = UUID.randomUUID().toString();
         final String UUID_2 = UUID.randomUUID().toString();
         final String UUID_3 = UUID.randomUUID().toString();
@@ -64,11 +60,27 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "create":
-                r = new Resume("");
+                r = Resume.EMPTY;
                 break;
             case "view":
+                r = storage.get(uuid);
+                break;
             case "edit":
                 r = storage.get(uuid);
+                for (SectionType type : new SectionType[]{SectionType.EXPERIENCE, SectionType.EDUCATION}) {
+                    OrganizationSection section = (OrganizationSection) r.getSection(type);
+                    List<Organization> emptyFirstOrganization = new ArrayList<>();
+                    emptyFirstOrganization.add(Organization.EMPTY);
+                    if (section != null) {
+                        for (Organization org : section.getOrganizations()) {
+                            List<Organization.Position> emptyFirstPosition = new ArrayList<>();
+                            emptyFirstPosition.add(Organization.Position.EMPTY);
+                            emptyFirstPosition.addAll(org.getPositions());
+                            emptyFirstOrganization.add(new Organization(org.getCompany().getName(), org.getCompany().getUrl(), emptyFirstPosition));
+                        }
+                    }
+                    r.addSection(type, new OrganizationSection(emptyFirstOrganization));
+                }
                 break;
             case "refill":
                 refillDB();
@@ -97,36 +109,57 @@ public class ResumeServlet extends HttpServlet {
             isNew = true;
         }
 
-
-
         r.setFullName(fullName);
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
-            if (value != null && value.trim().length() != 0) {
-                r.addContact(type, value);
-            } else {
+            if (HtmlUtil.isEmpty(value)) {
                 r.getContacts().remove(type);
+            } else {
+                r.addContact(type, value);
             }
         }
         for (SectionType type : SectionType.values()) {
-            if (type.equals(SectionType.PERSONAL) || type.equals(SectionType.OBJECTIVE)) {
-                String value = request.getParameter(type.name());
-                if (value != null && value.trim().length() != 0) {
-                    r.addSection(type, new TextSection(value));
-                } else {
-                    r.getSections().remove(type);
+            String value = request.getParameter(type.name());
+            String[] values = request.getParameterValues(type.name());
+            if (HtmlUtil.isEmpty(value) && values.length < 2) {
+                r.getSections().remove(type);
+            } else {
+                switch (type) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        r.addSection(type, new TextSection(value));
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        List<String> list = HtmlUtil.stringToList(value);
+                        r.addSection(type, new ListSection(list));
+                        break;
+                    case EDUCATION:
+                    case EXPERIENCE:
+                        List<Organization> orgs = new ArrayList<>();
+                        String[] urls = request.getParameterValues(type.name() + "url");
+                        for (int i = 0; i < values.length; i++) {
+                            String name = values[i];
+                            if (!HtmlUtil.isEmpty(name)) {
+                                List<Organization.Position> positions = new ArrayList<>();
+                                String namedIndex = type.name() + i;
+                                String[] startDates = request.getParameterValues(namedIndex + "startDate");
+                                String[] endDates = request.getParameterValues(namedIndex + "endDate");
+                                String[] titles = request.getParameterValues(namedIndex + "title");
+                                String[] descriptions = request.getParameterValues(namedIndex + "description");
+                                for (int j = 0; j < titles.length; j++) {
+                                    if (!HtmlUtil.isEmpty(titles[j])) {
+                                        positions.add(new Organization.Position(DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
+                                    }
+                                }
+                                orgs.add(new Organization(name, urls[i], positions));
+                            }
+                        }
+                        r.addSection(type, new OrganizationSection(orgs));
+                        break;
                 }
             }
 
-            if (type.equals(SectionType.ACHIEVEMENT) || type.equals(SectionType.QUALIFICATIONS)) {
-                String value = request.getParameter(type.name());
-                if (value != null && value.trim().length() != 0) {
-                    List<String> list = HtmlUtil.stringToList(value);
-                    r.addSection(type, new ListSection(list));
-                } else {
-                    r.getSections().remove(type);
-                }
-            }
         }
         if (isNew) {
             storage.save(r);

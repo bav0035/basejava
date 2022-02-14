@@ -1,6 +1,7 @@
 package ru.javawebinar.basejava.util;
 
 import ru.javawebinar.basejava.model.ListSection;
+import ru.javawebinar.basejava.model.Organization;
 import ru.javawebinar.basejava.model.Section;
 import ru.javawebinar.basejava.model.TextSection;
 
@@ -43,8 +44,14 @@ public class HtmlUtil {
     }
 
     public static List<String> stringToList(String value) {
-        List<String> list = new ArrayList<>();
-        list.addAll(Arrays.asList(value.split("\n")));
-        return list;
+        return Arrays.asList(value.split("\n"));
+    }
+
+    public static String formatDates(Organization.Position position) {
+        return DateUtil.format(position.getStartDate()) + "&nbsp;-&nbsp;" + DateUtil.format(position.getEndDate());
+    }
+
+    public static boolean isEmpty(String value) {
+        return value == null || value.trim().length() == 0;
     }
 }

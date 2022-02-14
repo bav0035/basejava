@@ -76,7 +76,7 @@ public class ResumeTestData {
                 "Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования",
                 "Родной русский, английский \"upper intermediate\""
         ))));
-/*
+
         OrganizationSection exp = new OrganizationSection();
         exp.add(new Organization("Java Online Projects", null,
                 new Organization.Position(2013, Month.OCTOBER, "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок")));
@@ -94,6 +94,6 @@ public class ResumeTestData {
                 new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Инженер (программист Fortran, C)", null)));
         edu.add(new Organization("Заочная физико-техническая школа при МФТИ", null,
                 new Organization.Position(1984, Month.SEPTEMBER, 1987, Month.JUNE, "Закончил с отличием", null)));
-        r.addSection(SectionType.EDUCATION, edu);*/
+        r.addSection(SectionType.EDUCATION, edu);
     }
 }

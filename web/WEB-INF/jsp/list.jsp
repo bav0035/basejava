@@ -30,7 +30,7 @@
             </tr>
         </c:forEach>
     </table>
-    <a href="resume?action=create">Add new resume</a>
+    <a href="resume?action=create">Add new resume <img src="img/add.png"></a>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 <a href="resume?action=refill">RefillDB</a>

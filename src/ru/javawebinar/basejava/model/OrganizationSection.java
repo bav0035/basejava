@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.model;
 
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,6 +13,14 @@ public class OrganizationSection extends Section {
 
     public OrganizationSection() {
 
+    }
+
+    public OrganizationSection(List<Organization> list) {
+        organizations = list;
+    }
+
+    public OrganizationSection(Organization... items) {
+        organizations = Arrays.asList(items);
     }
 
     public void add(Organization org) {
